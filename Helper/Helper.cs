@@ -57,10 +57,7 @@ namespace Helper
 
 
             var list = MyModel.GetAvailableForPurchase().ToList().FirstOrDefault();
-
-            MyModel.BuyRecord(list.Cost, list.Id, 1, 300);
-            foreach (var sale in MyModel.GetAllSales())
-                Console.WriteLine($"sales:ID:{sale.UserId}:bonuses:{sale.Bonuses}cost{sale.Cost}:total:{sale.TotalCost}");
+ 
 
         }
     }

@@ -11,6 +11,24 @@
     <Folder Include="Data\" />
     <Folder Include="Infrastructure\Facades\" />
     <Folder Include="Models\" />
+    <Folder Include="src\" />
   </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.13" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.10" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.4.0-ci65" />
+	</ItemGroup>
 
 </Project>

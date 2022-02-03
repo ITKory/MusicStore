@@ -4,9 +4,63 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicStore.Views.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="UserWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height=".1*"></RowDefinition>
+            <RowDefinition  Height=".2*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height=".3*"></RowDefinition>
+        </Grid.RowDefinitions>
+   
+
+        <Image Source="/src/arph.svg" Grid.Row="3" Margin="5" HorizontalAlignment="Left"></Image>
+        <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4"  TabStripPlacement="Left" >
+            <TabItem >
+                <TabItem.Header>
+                    <DockPanel>
+                        <TextBlock   FontSize="20" Foreground="Black">1</TextBlock>
+                        <materialDesign:PackIcon Kind="Home" Height="30"></materialDesign:PackIcon>
+                    </DockPanel>
+                </TabItem.Header>
+                <Grid>
+                    <materialDesign:Card >
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">ГЛАВНАЯ</TextBlock>
+                    </materialDesign:Card>
+                </Grid>
+            </TabItem>
+            <TabItem  >
+                <TabItem.Header>
+                    <DockPanel>
+                    <TextBlock   FontSize="20" Foreground="Black">2</TextBlock>
+                        <materialDesign:PackIcon Kind="LibraryMusicOutline" Height="30"></materialDesign:PackIcon>
+                    </DockPanel>
+                </TabItem.Header>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">ПОИСК</TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem  >
+                <TabItem.Header>
+                    <DockPanel>
+                        <TextBlock   FontSize="20" Foreground="Black">3</TextBlock>
+                        <materialDesign:PackIcon Kind="Account" Height="30"></materialDesign:PackIcon>
+                    </DockPanel>
+                </TabItem.Header>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">профиль</TextBlock>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>
