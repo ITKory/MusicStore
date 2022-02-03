@@ -7,4 +7,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Infrastructure\Facades\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

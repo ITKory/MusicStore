@@ -36,7 +36,8 @@ namespace Helper
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=localhost;Database=music_store;Uid=root");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySQL("Server=localhost;Database=music_store;Uid=root;");
             }
         }
 
@@ -221,6 +222,8 @@ namespace Helper
                     .HasColumnType("int(11)")
                     .HasColumnName("track_count");
 
+                entity.Property(e => e.Visible).HasColumnName("visible");
+
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.TabMusicRecords)
                     .HasForeignKey(d => d.AuthorId)
@@ -357,6 +360,8 @@ namespace Helper
 
                 entity.HasIndex(e => e.MusicRecordId, "music_record_id");
 
+                entity.HasIndex(e => e.UserId, "user_id");
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -377,11 +382,21 @@ namespace Helper
                     .HasColumnType("int(11)")
                     .HasColumnName("total_cost");
 
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
+
                 entity.HasOne(d => d.MusicRecord)
                     .WithMany(p => p.TabSales)
                     .HasForeignKey(d => d.MusicRecordId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tab_sales_ibfk_1");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TabSales)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tab_sales_ibfk_2");
             });
 
             modelBuilder.Entity<TabStorage>(entity =>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Helper
 {
-    public partial class TabMusicRecord
+    public partial class TabMusicRecord:IDisposable
     {
         public TabMusicRecord()
         {
@@ -25,6 +25,7 @@ namespace Helper
         public int ProductionCoasts { get; set; }
         public int Cost { get; set; }
         public string Name { get; set; }
+        public bool Visible { get; set; }
 
         public virtual TabAuthor Author { get; set; }
         public virtual TabGenre Genre { get; set; }

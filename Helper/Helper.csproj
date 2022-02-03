@@ -23,6 +23,12 @@
 		<PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.10" />
  
 	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <Folder Include="facades\" />
+	</ItemGroup>
 	
 	
 </Project>

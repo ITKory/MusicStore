@@ -10,14 +10,11 @@ namespace Helper.Models
     {
 
         MusicContext _context;
-        // var records = context.TabMusicRecords.Where(a => a.Author.Group.Name == "Boulevard Depo").Select(r => r.Name).ToList();
 
-        public Model( )
+        public Model()
         {
             _context = new();
         }
-
-
 
         public List<TabAuthor> GetAllAuthors()
          => _context.TabAuthors.ToList();
@@ -33,6 +30,8 @@ namespace Helper.Models
          => _context.TabUsers.ToList();
         public List<TabBonuse> GetAllBonuses()
         => _context.TabBonuses.ToList();
+        public List<TabSale> GetAllSales()
+        => _context.TabSales.ToList();
 
         public List<TabMusicRecord> GetAvailableForPurchase()
         => _context.TabStorages.Where(s => s.Count > 0).Select(s => s.MusicRecord).ToList();
@@ -51,6 +50,20 @@ namespace Helper.Models
                 _context.TabBonuses.Add(new TabBonuse { Count = bonuses, UserId = userId });
             _context.SaveChanges();
 
+        }
+
+        public void BuyRecord(ref TabSale tabSale)
+        {
+            _context.TabSales.Add(tabSale); ;
+            _context.SaveChanges();
+
+        }
+
+
+        public void AddRecord( TabMusicRecord musicRecord)
+        {
+        _context.TabMusicRecords.Add( musicRecord);
+        _context.SaveChanges();
         }
 
 

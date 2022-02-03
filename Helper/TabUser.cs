@@ -11,6 +11,7 @@ namespace Helper
         {
             TabBonuses = new HashSet<TabBonuse>();
             TabPurchaseHistories = new HashSet<TabPurchaseHistory>();
+            TabSales = new HashSet<TabSale>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace Helper
         public virtual TabPerson Person { get; set; }
         public virtual ICollection<TabBonuse> TabBonuses { get; set; }
         public virtual ICollection<TabPurchaseHistory> TabPurchaseHistories { get; set; }
+        public virtual ICollection<TabSale> TabSales { get; set; }
     }
 }
