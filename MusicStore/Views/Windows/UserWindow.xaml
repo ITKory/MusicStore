@@ -107,39 +107,33 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"   >
                             <ComboBox materialDesign:HintAssist.Hint="Genre" 
                                           IsEditable="True"
-                                           SelectedIndex="1"
                                           Margin="10"
                                           ItemsSource="{Binding GetGenres}"
-                                          SelectedItem="{Binding SelectedGenre }"
-                                          SelectedValue="{Binding SelectedGenre.Name}"
-                                          
-                                          >
-                                <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                               
-                            </ComboBox>
-
-                            <ComboBox materialDesign:HintAssist.Hint="Publisher"
-                                          SelectedIndex="1"
+                                          SelectedItem="{Binding SelectedGenre , Mode=TwoWay}"
+                                          SelectedValue="{Binding SelectedGenre}"
+                                          SelectedValuePath="Name"
+                                          DisplayMemberPath ="Name"
+                                          />
+                            <ComboBox materialDesign:HintAssist.Hint="Publisher"  
                                           IsEditable="True" Margin="10"
                                           ItemsSource="{Binding GetPublishers}"
-                                          SelectedItem="{Binding SelectedPublisher}" 
-                                          SelectedValue="{Binding SelectedPublisher.Name}"
-                                          ItemTemplate="{StaticResource CatCombo }"/>
+                                          SelectedItem="{Binding SelectedPublisher , Mode=TwoWay}"
+                                          SelectedValue="{Binding SelectedPublisher}"
+                                          SelectedValuePath="Name"
+                                          DisplayMemberPath ="Name"
+                                      
+                                           />
                             
-                                <ComboBox materialDesign:HintAssist.Hint="Sort by" 
+                                <!--<ComboBox materialDesign:HintAssist.Hint="Sort by" 
                                           IsEditable="True"
                                           Margin="10"
-                                          SelectedValue="{Binding OrderBy}"
-                                          SelectedItem="{Binding SelectOldOrNew}"
+                                          SelectedItem="{Binding SelectOldOrNew, Mode=TwoWay}"
+                                          SelectedValue="{Binding SelectOldOrNew}"
                                           SelectedValuePath="Content"
                                        >
                                 <ComboBoxItem  Content="Old"/>
                                 <ComboBoxItem Content="New"/>
-                            </ComboBox>
+                            </ComboBox>-->
                         </StackPanel>
                     </StackPanel>
 

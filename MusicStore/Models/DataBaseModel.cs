@@ -76,23 +76,22 @@ namespace MusicStore.Models
 
         public List<TabMusicRecord> SerchRecords(string genre,string publisher, string sortBy,string searchVal)
         {
-            var records = new List<TabMusicRecord>();
+            var records = _context.TabMusicRecords.ToList();
             if (searchVal != null)
                 records = _context.TabMusicRecords
                     .Where(r =>
                     r.Author.Person.LastName == searchVal ||
                     r.Author.Person.FirstName == searchVal ||
                     r.Group.Name == searchVal
-                    ).ToList();
+                    ).Select(r=>r).ToList();
             if (genre != null)
-               records =  records.Where(r => r.Genre.Name == genre).ToList();
+               records =  records.Where(r => r.Genre.Name == genre).Select(r=>r).ToList();
 
             if (publisher != null)
-                records = records.Where(r => r.Publisher.Name == publisher).ToList();
+                records = records.Where(r => r.Publisher.Name == publisher).Select(r=>r).ToList();
             
-            if (sortBy == "Old")
-                return records.OrderByDescending(r=>r).ToList();
-            return records.ToList();
+            //    records = records.OrderByDescending(r=>r.PublishDate).Select(r=>r).ToList();
+            //return records.ToList();
 
         }
 

@@ -19,8 +19,8 @@ namespace MusicStore.ViewModels
         public UserModelView()
         {
             facade = new();
-            _genre = new() ;
-            _publisher = new();
+    
+     
             _popularAlbums = facade.GetAllPopular();
             _newRecords = facade.GetAllNewRecords();
             _publishers = facade.PublisherInfo();
@@ -36,9 +36,9 @@ namespace MusicStore.ViewModels
             get => search;
             set
             {
-                _searchableRecords = facade.SerchRecords(_genre.Name, _publisher.Name, OrderBy, search);
+                _searchableRecords = facade.SerchRecords(_genre, _publisher, OrderBy, search);
                 Set(ref search, value, "GetSearchableRecords");
-                OnPropertyChanged("SetPublisher");
+           
                 
             }
         }
@@ -81,12 +81,15 @@ namespace MusicStore.ViewModels
             set=> Set(ref _publishers, value);
         }
 
-        private TabPublisher _publisher;
-        public TabPublisher SelectedPublisher
+        private string _publisher;
+        public string SelectedPublisher
         {
             get => _publisher;
-            set => Set(ref _publisher, value, "SelectedPublisher");
-
+            set
+            {
+                Set(ref _publisher, value, "SelectedPublisher");
+                UploadRecords();
+            }
         }
 
 
@@ -97,22 +100,39 @@ namespace MusicStore.ViewModels
             set =>  Set(ref _genres, value);
        
         }
-        private TabGenre _genre;
-        public TabGenre SelectedGenre
+        private string _genre;
+        public string SelectedGenre
         {
             get => _genre;
-            set => Set(ref _genre, value, "SelectedGenre");
+            set
+            {
+                Set(ref _genre, value, "SelectedGenre");
+                UploadRecords();
 
+            }
         }
 
 
- 
+
 
         private string OrderBy;
         public string SelectOldOrNew
         {
             get => OrderBy;
-            set => Set(ref OrderBy, value);
+            set
+            {
+                Set(ref OrderBy, value);
+                UploadRecords();
+            }
+        }
+
+
+
+        private void  UploadRecords()
+        {
+            _searchableRecords = facade.SerchRecords(_genre, _publisher, OrderBy, search);
+            OnPropertyChanged("GetSearchableRecords");
+
         }
 
 
