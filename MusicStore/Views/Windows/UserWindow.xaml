@@ -3,11 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MusicStore.ViewModels"
+        xmlns:data="clr-namespace:MusicStore.Data"
         xmlns:local="clr-namespace:MusicStore.Views.Windows"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="UserWindow" Height="450" Width="800">
-    <Grid>
+        Title="UserWindow" 
+        Height="450" 
+        Width="800"
+        MinWidth="450"
+        >
+    <Window.DataContext>
+        <vm:UserModelView></vm:UserModelView>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/templates/user.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+        <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -21,44 +39,187 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height=".3*"></RowDefinition>
         </Grid.RowDefinitions>
-   
 
-        <Image Source="/src/arph.svg" Grid.Row="3" Margin="5" HorizontalAlignment="Left"></Image>
+        
+        <Image Source="/src/Sign-in-icon.jpg" Grid.Row="1" Grid.Column="4" Height="30" />
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Grid.Column="4">LOGOUT</TextBlock>
+           
+         
+      
+        <Image Source="/src/arph.png" Grid.Row="3" Margin="5" HorizontalAlignment="Left"></Image>
         <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4"  TabStripPlacement="Left" >
+            
+            
             <TabItem >
                 <TabItem.Header>
                     <DockPanel>
-                        <TextBlock   FontSize="20" Foreground="Black">1</TextBlock>
-                        <materialDesign:PackIcon Kind="Home" Height="30"></materialDesign:PackIcon>
+                        <materialDesign:PackIcon Kind="Home" Height="20"></materialDesign:PackIcon>
+                        <TextBlock  FontSize="15" Foreground="Black">Главная</TextBlock>
                     </DockPanel>
                 </TabItem.Header>
-                <Grid>
-                    <materialDesign:Card >
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">ГЛАВНАЯ</TextBlock>
-                    </materialDesign:Card>
+                <ScrollViewer     >
+                    <StackPanel Margin="5"    >
+                         
+                        <TextBlock FontSize="20" FontWeight="Bold" Text="Popular" Margin="40,0,0,0"/>
+                        <ListView  ItemsSource="{Binding GetPopular}"  ItemTemplate="{StaticResource RecordCard }"  >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate  >
+                                    <WrapPanel Width="450"  />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+
+
+                        <TextBlock Text="New" FontSize="20" FontWeight="Bold"  Margin="40,0,0,0"/>
+                        <ListView ItemsSource="{Binding GetNewRecords}"  ItemTemplate="{StaticResource RecordCard }" >
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate >
+                                    <WrapPanel Width="450"  />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+
+
+                    </StackPanel>
+                </ScrollViewer>
+
+            </TabItem>
+            
+            <TabItem   >
+                <TabItem.Header>
+                    <DockPanel>
+                        <materialDesign:PackIcon Kind="LibraryMusicOutline" Height="20"></materialDesign:PackIcon>
+                        <TextBlock   FontSize="15" Foreground="Black">каталог</TextBlock>
+                    </DockPanel>
+                </TabItem.Header>
+                
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height=".3*" ></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" >
+                        <materialDesign:PackIcon      Kind="Magnify" Height="20"></materialDesign:PackIcon>
+                        <TextBox   materialDesign:HintAssist.Hint="Album or Author" Text="{Binding Serch , UpdateSourceTrigger=PropertyChanged}" Cursor="Arrow"   />
+                     </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"   >
+                            <ComboBox materialDesign:HintAssist.Hint="Genre" 
+                                          IsEditable="True"
+                                           SelectedIndex="1"
+                                          Margin="10"
+                                          ItemsSource="{Binding GetGenres}"
+                                          SelectedItem="{Binding SelectedGenre }"
+                                          SelectedValue="{Binding SelectedGenre.Name}"
+                                          
+                                          >
+                                <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                               
+                            </ComboBox>
+
+                            <ComboBox materialDesign:HintAssist.Hint="Publisher"
+                                          SelectedIndex="1"
+                                          IsEditable="True" Margin="10"
+                                          ItemsSource="{Binding GetPublishers}"
+                                          SelectedItem="{Binding SelectedPublisher}" 
+                                          SelectedValue="{Binding SelectedPublisher.Name}"
+                                          ItemTemplate="{StaticResource CatCombo }"/>
+                            
+                                <ComboBox materialDesign:HintAssist.Hint="Sort by" 
+                                          IsEditable="True"
+                                          Margin="10"
+                                          SelectedValue="{Binding OrderBy}"
+                                          SelectedItem="{Binding SelectOldOrNew}"
+                                          SelectedValuePath="Content"
+                                       >
+                                <ComboBoxItem  Content="Old"/>
+                                <ComboBoxItem Content="New"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                    <ListView  Grid.Row="1" ItemsSource="{Binding GetSearchableRecords}"  ItemTemplate="{StaticResource RecordCard }"  >
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate  >
+                                <WrapPanel Width="450"  />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
                 </Grid>
+                
+                
             </TabItem>
             <TabItem  >
                 <TabItem.Header>
-                    <DockPanel>
-                    <TextBlock   FontSize="20" Foreground="Black">2</TextBlock>
-                        <materialDesign:PackIcon Kind="LibraryMusicOutline" Height="30"></materialDesign:PackIcon>
+                    <DockPanel >
+                        <materialDesign:PackIcon Kind="Account" Height="20"></materialDesign:PackIcon>
+                        <TextBlock FontSize="15" Foreground="Black">Личный Кабинет</TextBlock>
                     </DockPanel>
                 </TabItem.Header>
-                <Grid>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">ПОИСК</TextBlock>
-                </Grid>
-            </TabItem>
-            <TabItem  >
-                <TabItem.Header>
-                    <DockPanel>
-                        <TextBlock   FontSize="20" Foreground="Black">3</TextBlock>
-                        <materialDesign:PackIcon Kind="Account" Height="30"></materialDesign:PackIcon>
-                    </DockPanel>
-                </TabItem.Header>
-                <Grid>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">профиль</TextBlock>
-                </Grid>
+                <StackPanel>
+                    
+                <TabControl  Margin="5" >
+                    <TabItem  >
+                        <TabItem.Header>
+                            <DockPanel>
+                                <materialDesign:PackIcon Kind="Basket" Height="20"></materialDesign:PackIcon>
+                                    <TextBlock  FontSize="15" Foreground="Black">Basket</TextBlock>
+                            </DockPanel>
+                        </TabItem.Header>
+                            <StackPanel>
+
+                                <ListView Grid.Row="1" ItemTemplate="{StaticResource BasketCard}" >
+                                    <TextBlock>TEST</TextBlock>
+                                </ListView>
+                                
+                                
+                                <DockPanel LastChildFill="False" >
+                                    <Button DockPanel.Dock="Left"  Content="Buy"/>
+                                    <Button DockPanel.Dock="Right" Content="Clear" Background="Red " />
+                                </DockPanel>
+                            </StackPanel>
+                        </TabItem>
+                    <TabItem   >
+                        <TabItem.Header>
+                            <DockPanel>
+                                <materialDesign:PackIcon Kind="History" Height="20"></materialDesign:PackIcon>
+                                    <TextBlock   FontSize="15" Foreground="Black">History</TextBlock>
+                            </DockPanel>
+                        </TabItem.Header>
+                            <ListView Grid.Row="1" >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type ListViewItem}">
+                                        <materialDesign:Card >
+                                            <DockPanel >
+                                                <TextBlock Margin="10">
+                                       Album:<TextBlock Text=""/>
+                                        </TextBlock>
+                                                <TextBlock Margin="10">
+                                       Cost:<TextBlock Text=""/>
+                                        </TextBlock>
+
+                                        <TextBlock Margin="10">
+                                       Count:<TextBlock Text=""/>
+                                        </TextBlock>
+
+                                            </DockPanel>
+                                        </materialDesign:Card>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <TextBlock>ffsdfd</TextBlock>
+
+                            </ListView>
+                        </TabItem>
+                    
+                </TabControl>
+                </StackPanel>
+
             </TabItem>
         </TabControl>
 

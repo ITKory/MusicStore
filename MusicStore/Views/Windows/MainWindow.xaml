@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicStore"
         mc:Ignorable="d"
-     
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"     
+        Title="Login" Height="400" Width="400">
 
-    </Grid>
+       
+        <Border>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/src/arph.png"  Height="20" />
+            <TextBox   materialDesign:HintAssist.Hint="Song or Author" Text="" Margin="10" />
+            <TextBox   materialDesign:HintAssist.Hint="Song or Author" Text=""  Margin="10" Cursor="Arrow"    />
+            <Button  Content="Login"  Height="28" Margin="10"/>
+        </StackPanel>
+        </Border>
+     
 </Window>

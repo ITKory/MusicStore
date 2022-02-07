@@ -1,0 +1,57 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                     xmlns:data="clr-namespace:MusicStore.Data"
+>
+    <DataTemplate DataType="{x:Type data:TabMusicRecord}"  x:Key="RecordCard">
+        <materialDesign:Card  Background="Beige" >
+            <StackPanel   Margin="10">
+                <Image Source="/src/qwerty-lang.jpg"   Height="100"/>
+                <TextBlock>
+                                        Album: <TextBlock Text="{Binding  Name}"/>
+                </TextBlock>
+                <TextBlock>
+                                        Group: <TextBlock Text="{Binding  Group.Name}"/>
+                </TextBlock>
+                <TextBlock>
+                                        Author: <TextBlock Text="{Binding   Author.Person.FirstName}"/> <TextBlock Text="{Binding Author.Person.LastName}"/>
+                </TextBlock>
+                <TextBlock>
+                                        Track count: <TextBlock Text="{Binding  TrackCount}"/>
+                </TextBlock>
+                <TextBlock>
+                                        PublishDate: <TextBlock Text="{Binding  PublishDate.Year}"/>
+                </TextBlock>
+                <TextBlock>
+                           Cost:<TextBlock Text="{Binding  Cost}"/>
+                </TextBlock>
+            </StackPanel>
+        </materialDesign:Card>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type ListViewItem}"  x:Key="BasketCard">
+        <materialDesign:Card >
+            <DockPanel >
+                <TextBlock Margin="10">
+                 Album:<TextBlock Text=""/>
+                 </TextBlock>
+                <TextBlock Margin="10">
+                 Cost:<TextBlock Text=""/>
+                 </TextBlock>
+                <Button Margin="10" Height="25">+</Button>
+                <TextBlock Margin="15" >1</TextBlock>
+                <Button Margin="10"   Height="25" Background="Pink" >-</Button>
+            </DockPanel>
+        </materialDesign:Card>
+    </DataTemplate>
+
+
+
+    <DataTemplate    x:Key="CatCombo">
+         <TextBlock Text="{Binding  Name}"/>
+    </DataTemplate>
+    
+ 
+
+
+</ResourceDictionary>

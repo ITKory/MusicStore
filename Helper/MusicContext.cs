@@ -36,7 +36,7 @@ namespace Helper
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL("Server=localhost;Database=music_store;Uid=root;");
+                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=localhost;Database=music_store;Uid=root;");
             }
         }
 

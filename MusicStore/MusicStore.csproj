@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Infrastructure\Facades\" />
-    <Folder Include="Models\" />
+    <Folder Include="Resources\Styles\" />
     <Folder Include="src\" />
   </ItemGroup>
 

@@ -22,6 +22,9 @@ namespace MusicStore.Views.Windows
         public UserWindow()
         {
             InitializeComponent();
+           
         }
+
+     
     }
 }
