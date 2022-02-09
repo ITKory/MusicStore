@@ -1,45 +1,41 @@
-﻿using MusicStore.ViewModels.Base;
-using System;
+﻿using MusicStore.Data;
+using MusicStore.Infrastructure.Commands;
 using MusicStore.Infrastructure.Facades;
-using MusicStore.Data;
+using MusicStore.ViewModels.Base;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace MusicStore.ViewModels
 {
-  
-    internal class UserModelView:ViewModel
+
+    internal class UserModelView : ViewModel
     {
-  
+
         private DataBaseFacade facade;
         public UserModelView()
         {
             facade = new();
-    
-     
+
             _popularAlbums = facade.GetAllPopular();
             _newRecords = facade.GetAllNewRecords();
             _publishers = facade.PublisherInfo();
             _genres = facade.GenreInfo();
-
+            _basket = new( facade.GetBasket(1));
         }
 
-      
 
-        public string search ;
-        public  string Serch  
+
+        private string search;
+        public string Serch
         {
             get => search;
             set
             {
                 _searchableRecords = facade.SerchRecords(_genre, _publisher, OrderBy, search);
                 Set(ref search, value, "GetSearchableRecords");
-           
-                
+
+
             }
         }
 
@@ -48,7 +44,8 @@ namespace MusicStore.ViewModels
         public List<TabMusicRecord> GetPopular
         {
             get => _popularAlbums;
-            set {
+            set
+            {
                 _popularAlbums = facade.GetAllPopular();
                 Set(ref _popularAlbums, value);
             }
@@ -65,6 +62,12 @@ namespace MusicStore.ViewModels
             }
         }
 
+        private ObservableCollection<TabPurchaseHistory> _basket;
+        public ObservableCollection<TabPurchaseHistory> GetBasket
+        {
+            get => _basket;
+            set => Set(ref _basket, value, "GetBasket");
+        }
 
         private List<TabMusicRecord> _searchableRecords;
         public List<TabMusicRecord> GetSearchableRecords
@@ -78,7 +81,7 @@ namespace MusicStore.ViewModels
         public List<TabPublisher> GetPublishers
         {
             get => _publishers;
-            set=> Set(ref _publishers, value);
+            set => Set(ref _publishers, value);
         }
 
         private string _publisher;
@@ -97,8 +100,8 @@ namespace MusicStore.ViewModels
         public List<TabGenre> GetGenres
         {
             get => _genres;
-            set =>  Set(ref _genres, value);
-       
+            set => Set(ref _genres, value);
+
         }
         private string _genre;
         public string SelectedGenre
@@ -128,12 +131,57 @@ namespace MusicStore.ViewModels
 
 
 
-        private void  UploadRecords()
+        private void UploadRecords()
         {
             _searchableRecords = facade.SerchRecords(_genre, _publisher, OrderBy, search);
             OnPropertyChanged("GetSearchableRecords");
 
         }
+
+ 
+
+
+
+
+        public RelayCommand Increment =>
+            new(rId =>
+            {
+                
+               
+                facade.IncrementRecordsCount(  _basket, Convert.ToInt32(rId));
+                using (  facade = new DataBaseFacade())
+                    _basket = new(facade.GetBasket(1));
+
+                OnPropertyChanged("GetBasket");
+
+            }, _ => true);
+        public RelayCommand Decrement =>
+              new(rId =>
+              {
+                 facade.DecrementRecordsCount(_basket, Convert.ToInt32(rId));
+                 using(  facade = new DataBaseFacade())
+                    _basket = new(facade.GetBasket(1));
+                
+                OnPropertyChanged("GetBasket");
+                 
+                
+              }, _ => true);
+
+        public RelayCommand BuyAll =>
+                    new(rId =>
+                    {
+                        facade.BuyAll(_basket);
+
+
+                    }, _ => true);
+        public RelayCommand Clear =>
+                new(rId =>
+                {
+                    facade.BuyAll(_basket);
+             
+
+
+                }, _ => true);
 
 
     }

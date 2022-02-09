@@ -2,13 +2,12 @@
 using MusicStore.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicStore.Infrastructure.Facades
 {
-    internal class DataBaseFacade:DataBaseModel
+    internal class DataBaseFacade : DataBaseModel , IDisposable
     {
 
         DataBaseModel _dbContext;
@@ -42,12 +41,39 @@ namespace MusicStore.Infrastructure.Facades
                 TotalCost = totalCost,
             };
             _dbContext.BuyRecord(ref record);
-
         }
+
+        public void IncrementRecordsCount(  ObservableCollection<TabPurchaseHistory> baskets, int recordId)
+        {
+            var basket = baskets.Where(r => r.MusicRecordId == recordId).FirstOrDefault();
+            if (basket != null)
+                _dbContext.UpdateCountInBasket(  basket, recordId, 1);
+        }
+
+        public void DecrementRecordsCount(ObservableCollection<TabPurchaseHistory> baskets, int recordId)
+        {
+           var  basket = baskets.Where(r => r.MusicRecordId == recordId).FirstOrDefault();
+            if (basket != null)
+            _dbContext.UpdateCountInBasket(  basket, recordId, -1);
+        }
+
         public List<TabMusicRecord> GetAllPopular()
         {
             return _dbContext.PopularInfo().Select(r => r.MusicRecord).ToList();
         }
+        public void BuyAll(ObservableCollection<TabPurchaseHistory> baskets)
+        {
+            foreach (var basket in baskets)
+                BuyRecord(basket.MusicRecord.Cost, basket.MusicRecordId, basket.UserId);
+            //дописать покупку товаров 
+            //очистить корзину 
+            // объеденить фасад и модель или еще раз хорошенько все распределить 
+            //ревью кода, почистить все чтобы было не стыдно
 
+        }
+        public void Dispose()
+        {
+            GC.Collect();
+        }
     }
 }

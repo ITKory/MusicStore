@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Helper
 {
-    public partial class TabMusicRecord 
+    public partial class TabMusicRecord
     {
         public TabMusicRecord()
         {

@@ -1,6 +1,4 @@
 ﻿using Helper.Models;
-using System;
-using System.Linq;
 
 namespace Helper
 {
@@ -11,7 +9,7 @@ namespace Helper
 
             Facade facade = new Facade();
 
-           
+
 
         }
     }

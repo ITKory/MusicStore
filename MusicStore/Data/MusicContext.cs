@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -36,7 +34,7 @@ namespace MusicStore.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=LOCALHOST;Database=music_store;Uid=root;");
+                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=localhost;Database=music_store;Uid=root");
             }
         }
 
@@ -376,6 +374,10 @@ namespace MusicStore.Data
                 entity.Property(e => e.Cost)
                     .HasColumnType("int(11)")
                     .HasColumnName("cost");
+
+                entity.Property(e => e.Count)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("count");
 
                 entity.Property(e => e.MusicRecordId)
                     .HasColumnType("int(11)")

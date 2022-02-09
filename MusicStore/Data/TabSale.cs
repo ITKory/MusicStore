@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace MusicStore.Data
 {
@@ -13,6 +10,7 @@ namespace MusicStore.Data
         public int Bonuses { get; set; }
         public int TotalCost { get; set; }
         public int UserId { get; set; }
+        public int Count { get; set; }
 
         public virtual TabMusicRecord MusicRecord { get; set; }
         public virtual TabUser User { get; set; }

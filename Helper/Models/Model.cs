@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper.Models
 {
@@ -60,10 +57,10 @@ namespace Helper.Models
         }
 
 
-        public void AddRecord( TabMusicRecord musicRecord)
+        public void AddRecord(TabMusicRecord musicRecord)
         {
-        _context.TabMusicRecords.Add( musicRecord);
-        _context.SaveChanges();
+            _context.TabMusicRecords.Add(musicRecord);
+            _context.SaveChanges();
         }
 
 

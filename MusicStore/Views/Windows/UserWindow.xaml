@@ -168,14 +168,14 @@
                         </TabItem.Header>
                             <StackPanel>
 
-                                <ListView Grid.Row="1" ItemTemplate="{StaticResource BasketCard}" >
-                                    <TextBlock>TEST</TextBlock>
-                                </ListView>
-                                
-                                
+
+                                <ListView Grid.Row="1" ItemTemplate="{StaticResource BasketCard}" ItemsSource="{Binding GetBasket,UpdateSourceTrigger=PropertyChanged}" />
+
+
+
                                 <DockPanel LastChildFill="False" >
-                                    <Button DockPanel.Dock="Left"  Content="Buy"/>
-                                    <Button DockPanel.Dock="Right" Content="Clear" Background="Red " />
+                                    <Button Command="{Binding BuyAll}"   DockPanel.Dock="Left"  Content="Buy" Cursor="Hand"/>
+                                    <Button    DockPanel.Dock="Right" Content="Clear" Background="Red " />
                                 </DockPanel>
                             </StackPanel>
                         </TabItem>

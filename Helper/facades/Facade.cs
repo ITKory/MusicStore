@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Helper.Models
+﻿namespace Helper.Models
 {
-    internal class Facade:Model
+    internal class Facade : Model
     {
-          Model _dbContext;
+        Model _dbContext;
         public Facade()
         {
             _dbContext = new();
@@ -16,10 +10,11 @@ namespace Helper.Models
 
         public void BuyRecord(int cost, int recordId, int userId, int bonuses = 0, bool useB = true)
         {
-             
+
             var totalCost = cost;
             var discont = cost * 50 / 100;
-            if (useB && bonuses > discont) {
+            if (useB && bonuses > discont)
+            {
                 totalCost -= discont;
                 _dbContext.InsertBonuses(-discont, userId);
             }
