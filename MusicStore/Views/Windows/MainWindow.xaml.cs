@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MusicStore.Infrastructure.Interfaces;
+using System.Windows;
 
 namespace MusicStore
 {
@@ -9,5 +10,6 @@ namespace MusicStore
         {
             InitializeComponent();
         }
+ 
     }
 }

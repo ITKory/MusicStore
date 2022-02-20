@@ -3,26 +3,30 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:data="clr-namespace:MusicStore.Data"
                     xmlns:vm="clr-namespace:MusicStore.ViewModels" 
->
-    
+                    xmlns:Converter="clr-namespace:MusicStore.Infrastructure.Convertors"
+                    
+                    >
+
+    <Converter:ImageConvertor x:Key="ImageConvert"/>
+
     <DataTemplate DataType="{x:Type data:TabMusicRecord}"  x:Key="RecordCard">
-        <materialDesign:Card  Background="Beige" >
+        <materialDesign:Card  Background="WhiteSmoke"    >
             <StackPanel   Margin="10">
-                <Image Source="/src/qwerty-lang.jpg"   Height="100"/>
+                <Image    Source="{Binding ImgUri,Converter={StaticResource ImageConvert}}"   Height="100" />
                 <TextBlock>
-                                        Album: <TextBlock Text="{Binding  Name}"/>
+                   Album: <TextBlock Text="{Binding  Name}"/>
                 </TextBlock>
                 <TextBlock>
-                                        Group: <TextBlock Text="{Binding  Group.Name}"/>
+                   Group: <TextBlock Text="{Binding  Group.Name}"/>
                 </TextBlock>
                 <TextBlock>
-                                        Author: <TextBlock Text="{Binding   Author.Person.FirstName}"/> <TextBlock Text="{Binding Author.Person.LastName}"/>
+                   Author: <TextBlock Text="{Binding   Author.Person.FirstName}"/> <TextBlock Text="{Binding Author.Person.LastName}"/>
                 </TextBlock>
                 <TextBlock>
-                                        Track count: <TextBlock Text="{Binding  TrackCount}"/>
+                  Track count: <TextBlock Text="{Binding  TrackCount}"/>
                 </TextBlock>
                 <TextBlock>
-                                        PublishDate: <TextBlock Text="{Binding  PublishDate.Year}"/>
+                  PublishDate: <TextBlock Text="{Binding  PublishDate.Year}"/>
                 </TextBlock>
                 <TextBlock>
                            Cost:<TextBlock Text="{Binding  Cost}"/>
@@ -49,6 +53,23 @@
         </materialDesign:Card>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type data:TabSale}"  x:Key="HistoryCard" >
+      
+            <materialDesign:Card >
+                <DockPanel >
+                    <TextBlock Margin="10">
+                 Album: <TextBlock Text="{Binding MusicRecord.Name}"/>
+                 </TextBlock>
+                    <TextBlock Margin="10">
+                 Cost by one: <TextBlock Text="{Binding MusicRecord.Cost}"/>$
+                 </TextBlock>
+                    <TextBlock Margin="10">
+                 Total: <TextBlock Text="{Binding TotalCost}"/>$
+                 </TextBlock>
+                </DockPanel>
+            </materialDesign:Card>
+        
+    </DataTemplate>
 
 
     <DataTemplate    x:Key="CatCombo">

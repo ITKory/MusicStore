@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -16,6 +17,7 @@ namespace MusicStore.Data
         public int Id { get; set; }
         public int PersonId { get; set; }
         public string Pwd { get; set; }
+        public string Login { get; set; }
 
         public virtual TabPerson Person { get; set; }
         public virtual ICollection<TabBonuse> TabBonuses { get; set; }

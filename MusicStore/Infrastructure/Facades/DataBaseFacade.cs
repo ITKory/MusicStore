@@ -1,20 +1,28 @@
-﻿using MusicStore.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicStore.Data;
+using MusicStore.Infrastructure.Constants;
 using MusicStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MusicStore.Infrastructure.Facades
 {
-    internal class DataBaseFacade : DataBaseModel , IDisposable
+    internal class DataBaseFacade:DataBaseModel
     {
 
-        DataBaseModel _dbContext;
-        public DataBaseFacade()
+       
+        MusicContext _context;
+ 
+        public DataBaseFacade(MusicContext context)
         {
-            _dbContext = new();
+           
+            _context = context;
         }
+
+ 
 
         public void BuyRecord(int cost, int recordId, int userId, int bonuses = 0, bool useB = true)
         {
@@ -24,12 +32,12 @@ namespace MusicStore.Infrastructure.Facades
             if (useB && bonuses > discont)
             {
                 totalCost -= discont;
-                _dbContext.InsertBonuses(-discont, userId);
+                InsertBonuses(-discont, userId);
             }
             else
             {
                 discont = 0;
-                _dbContext.InsertBonuses(cost * 10 / 100, userId);
+                InsertBonuses(cost * 10 / 100, userId);
             }
 
             var record = new TabSale
@@ -40,40 +48,39 @@ namespace MusicStore.Infrastructure.Facades
                 Cost = cost,
                 TotalCost = totalCost,
             };
-            _dbContext.BuyRecord(ref record);
+            BuyRecord(ref record);
         }
 
-        public void IncrementRecordsCount(  ObservableCollection<TabPurchaseHistory> baskets, int recordId)
-        {
-            var basket = baskets.Where(r => r.MusicRecordId == recordId).FirstOrDefault();
-            if (basket != null)
-                _dbContext.UpdateCountInBasket(  basket, recordId, 1);
-        }
+   
 
-        public void DecrementRecordsCount(ObservableCollection<TabPurchaseHistory> baskets, int recordId)
+         
+        public async void UpdateCountInBasket(TabPurchaseHistory basket, int recordId, int insertCount)
         {
-           var  basket = baskets.Where(r => r.MusicRecordId == recordId).FirstOrDefault();
-            if (basket != null)
-            _dbContext.UpdateCountInBasket(  basket, recordId, -1);
-        }
+             var changebleBasket = await _context.TabPurchaseHistories.Where(h => h.Id == basket.Id).FirstOrDefaultAsync();
+             int storageCount = await _context.TabStorages.Where(r => r.MusicRecordId == recordId).Select(r => r.Count).FirstOrDefaultAsync();
+            if (changebleBasket != null)
+            {
+                if (insertCount > 0 && storageCount > changebleBasket.RecordsCount)
+                {
+                    changebleBasket.RecordsCount += insertCount;
+                    _context.TabPurchaseHistories.Update(changebleBasket);
+                }
+                if (insertCount < 0 && changebleBasket.RecordsCount > 1)
+                {
+                    changebleBasket.RecordsCount += insertCount;
+                    _context.TabPurchaseHistories.Update(changebleBasket);
 
-        public List<TabMusicRecord> GetAllPopular()
-        {
-            return _dbContext.PopularInfo().Select(r => r.MusicRecord).ToList();
-        }
-        public void BuyAll(ObservableCollection<TabPurchaseHistory> baskets)
-        {
-            foreach (var basket in baskets)
-                BuyRecord(basket.MusicRecord.Cost, basket.MusicRecordId, basket.UserId);
-            //дописать покупку товаров 
-            //очистить корзину 
-            // объеденить фасад и модель или еще раз хорошенько все распределить 
-            //ревью кода, почистить все чтобы было не стыдно
+                }
+                _context.SaveChanges();
+
+
+            }
 
         }
-        public void Dispose()
-        {
-            GC.Collect();
-        }
+
+       
+
+
+      
     }
 }

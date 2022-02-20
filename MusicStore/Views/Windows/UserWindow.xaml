@@ -9,9 +9,12 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="UserWindow" 
-        Height="450" 
-        Width="800"
-        MinWidth="450"
+        Height="550" 
+        Width="900"
+        MinWidth="800"
+        xmlns:closer="clr-namespace:MusicStore.Infrastructure"
+        xmlns:Converter="clr-namespace:MusicStore.Infrastructure.Convertors"
+        closer:WindowCloser.EnableWindowClosing="True"
         >
     <Window.DataContext>
         <vm:UserModelView></vm:UserModelView>
@@ -31,7 +34,7 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width=".4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition  Height=".1*"></RowDefinition>
@@ -42,11 +45,16 @@
 
         
         <Image Source="/src/Sign-in-icon.jpg" Grid.Row="1" Grid.Column="4" Height="30" />
-        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Grid.Column="4">LOGOUT</TextBlock>
-           
-         
-      
-        <Image Source="/src/arph.png" Grid.Row="3" Margin="5" HorizontalAlignment="Left"></Image>
+        <Button Grid.Row="2"
+                   Grid.Column="4"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="logout" Command="{Binding LogOut}" Background="Red" Height="30" Cursor="Hand">
+
+        </Button>
+        <TextBlock Grid.Row="2"
+                   Grid.Column="4"
+                   HorizontalAlignment="Center" VerticalAlignment="Top" Text="User name"    Height="30">
+
+        </TextBlock>
         <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="4"  TabStripPlacement="Left" >
             
             
@@ -61,7 +69,7 @@
                     <StackPanel Margin="5"    >
                          
                         <TextBlock FontSize="20" FontWeight="Bold" Text="Popular" Margin="40,0,0,0"/>
-                        <ListView  ItemsSource="{Binding GetPopular}"  ItemTemplate="{StaticResource RecordCard }"  >
+                        <ListView     ItemsSource="{Binding GetPopular}"  ItemTemplate="{StaticResource RecordCard }"  >
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate  >
                                     <WrapPanel Width="450"  />
@@ -124,16 +132,6 @@
                                       
                                            />
                             
-                                <!--<ComboBox materialDesign:HintAssist.Hint="Sort by" 
-                                          IsEditable="True"
-                                          Margin="10"
-                                          SelectedItem="{Binding SelectOldOrNew, Mode=TwoWay}"
-                                          SelectedValue="{Binding SelectOldOrNew}"
-                                          SelectedValuePath="Content"
-                                       >
-                                <ComboBoxItem  Content="Old"/>
-                                <ComboBoxItem Content="New"/>
-                            </ComboBox>-->
                         </StackPanel>
                     </StackPanel>
 
@@ -156,63 +154,51 @@
                         <TextBlock FontSize="15" Foreground="Black">Личный Кабинет</TextBlock>
                     </DockPanel>
                 </TabItem.Header>
+                        <ScrollViewer>
                 <StackPanel>
                     
                 <TabControl  Margin="5" >
-                    <TabItem  >
-                        <TabItem.Header>
-                            <DockPanel>
-                                <materialDesign:PackIcon Kind="Basket" Height="20"></materialDesign:PackIcon>
-                                    <TextBlock  FontSize="15" Foreground="Black">Basket</TextBlock>
-                            </DockPanel>
-                        </TabItem.Header>
-                            <StackPanel>
+                            <TabItem  >
+                                <TabItem.Header>
+                                    <DockPanel>
+                                        <materialDesign:PackIcon Kind="Basket" Height="20"></materialDesign:PackIcon>
+                                        <TextBlock  FontSize="15" Foreground="Black">Basket</TextBlock>
+                                    </DockPanel>
+                                </TabItem.Header>
+
+                                <StackPanel>
+
+                                    <ListView Grid.Row="1" ItemTemplate="{StaticResource BasketCard}" ItemsSource="{Binding GetBasket,UpdateSourceTrigger=PropertyChanged}" />
 
 
-                                <ListView Grid.Row="1" ItemTemplate="{StaticResource BasketCard}" ItemsSource="{Binding GetBasket,UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <DockPanel LastChildFill="False" >
+                                        <Button Command="{Binding BuyAll}"   DockPanel.Dock="Left"  Content="Buy" Cursor="Hand"/>
+                                        <Button    DockPanel.Dock="Right" Content="Clear" Background="Red " />
+                                    </DockPanel>
+                                </StackPanel>
+
+                            </TabItem>
+
+                            <TabItem   >
+                                <TabItem.Header>
+                                    <DockPanel>
+                                        <materialDesign:PackIcon Kind="History" Height="20"></materialDesign:PackIcon>
+                                        <TextBlock   FontSize="15" Foreground="Black">History</TextBlock>
+                                    </DockPanel>
+                                </TabItem.Header>
 
 
 
-                                <DockPanel LastChildFill="False" >
-                                    <Button Command="{Binding BuyAll}"   DockPanel.Dock="Left"  Content="Buy" Cursor="Hand"/>
-                                    <Button    DockPanel.Dock="Right" Content="Clear" Background="Red " />
-                                </DockPanel>
-                            </StackPanel>
-                        </TabItem>
-                    <TabItem   >
-                        <TabItem.Header>
-                            <DockPanel>
-                                <materialDesign:PackIcon Kind="History" Height="20"></materialDesign:PackIcon>
-                                    <TextBlock   FontSize="15" Foreground="Black">History</TextBlock>
-                            </DockPanel>
-                        </TabItem.Header>
-                            <ListView Grid.Row="1" >
-                                <ListView.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type ListViewItem}">
-                                        <materialDesign:Card >
-                                            <DockPanel >
-                                                <TextBlock Margin="10">
-                                       Album:<TextBlock Text=""/>
-                                        </TextBlock>
-                                                <TextBlock Margin="10">
-                                       Cost:<TextBlock Text=""/>
-                                        </TextBlock>
+                                <ListView Grid.Row="1" ItemsSource="{Binding GetHistory}" ItemTemplate="{StaticResource HistoryCard}"  >
+                                </ListView>
 
-                                        <TextBlock Margin="10">
-                                       Count:<TextBlock Text=""/>
-                                        </TextBlock>
 
-                                            </DockPanel>
-                                        </materialDesign:Card>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                                <TextBlock>ffsdfd</TextBlock>
 
-                            </ListView>
-                        </TabItem>
-                    
-                </TabControl>
+                            </TabItem>
+                    </TabControl>
                 </StackPanel>
+                        </ScrollViewer>
 
             </TabItem>
         </TabControl>

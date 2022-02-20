@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -34,7 +36,7 @@ namespace MusicStore.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=localhost;Database=music_store;Uid=root");
+                optionsBuilder.UseLazyLoadingProxies().UseMySQL("Server=localhost;Database=music_store;Uid=root;");
             }
         }
 
@@ -49,6 +51,11 @@ namespace MusicStore.Data
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnName("login");
 
                 entity.Property(e => e.PersonId)
                     .HasColumnType("int(11)")
@@ -438,6 +445,11 @@ namespace MusicStore.Data
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnName("login");
 
                 entity.Property(e => e.PersonId)
                     .HasColumnType("int(11)")
